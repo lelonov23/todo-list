@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #3f72af;
+  color: #ffffff;
+}
+
+.routes {
+  list-style: none;
+  display: flex;
+
+  justify-self: flex-end;
+}
+
+.routes li {
+  padding: 0 0.3rem;
+}
+
+.first {
+  border-right: 1px solid #fff;
+}
+
+.logo {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+}
