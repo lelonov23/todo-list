@@ -5,6 +5,16 @@ interface Todo {
   categoryId: number | null;
 }
 
-type AppProps = {
+interface Category {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface TodoProps {
   todo: Todo;
-};
+}
+
+interface CategoryProps {
+  category: Category;
+}
