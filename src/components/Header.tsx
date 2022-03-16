@@ -13,6 +13,16 @@ function Header(props: HeaderProps) {
     ? `${classes.default.routerLink}` + " " + `${classes.default.active}`
     : `${classes.default.routerLink}`;
 
+  let addButton = isTasks ? (
+    <a className={classes.default.link} href="#">
+      Добавить задачу
+    </a>
+  ) : (
+    <a className={classes.default.link} href="#">
+      Добавить категорию
+    </a>
+  );
+
   console.log(isTasks);
 
   return (
@@ -32,10 +42,7 @@ function Header(props: HeaderProps) {
           </li>
         </ul>
       </div>
-
-      <a className={classes.default.link} href="#">
-        Добавить задачу
-      </a>
+      {props.page ? addButton : null}
     </header>
   );
 }

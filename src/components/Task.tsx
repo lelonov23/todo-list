@@ -12,7 +12,7 @@ function Task(props: TodoProps) {
       });
   }, []);
 
-  if (!isCategorized) return <div>Loading...</div>;
+  if (!isCategorized) return <div></div>;
   else if (props.todo.categoryId) {
     let categoryName: string = "";
     for (let category of categories) {

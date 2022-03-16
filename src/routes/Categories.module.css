@@ -1,51 +1,41 @@
-.taskList {
+.categoryList {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.taskList ul {
+.categoryList ul {
   list-style: none;
   width: 50%;
   margin: 0;
   padding: 0;
 }
 
-.task {
+.category {
   border-bottom: 2px solid #3f72af;
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
-.task:hover {
+.category:hover {
   background-color: rgba(37, 127, 234, 0.2);
 }
 
-.task h2,
-h3,
+.category h2,
 p {
   font-family: "Roboto", sans-serif;
   margin: 0;
   font-size: 18px;
 }
 
-.task h2,
-h3 {
+.category h2 {
   display: inline;
   padding-right: 1rem;
-}
-
-.task p {
-  color: #808080;
-  font-weight: 400;
-  padding-top: 0.5rem;
-}
-
-.task h2 {
   font-weight: 500;
   color: #000;
 }
 
-.task h3 {
+.category p {
+  color: #808080;
   font-weight: 400;
-  color: #3f72af;
+  padding-top: 0.5rem;
 }

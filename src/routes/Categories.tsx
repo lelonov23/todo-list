@@ -1,3 +1,5 @@
+import * as classes from "./Categories.module.css";
+
 import { useState, useEffect } from "react";
 import Category from "../components/Category";
 
@@ -12,20 +14,20 @@ function Categories(props: PageProps) {
         setIsLoaded(true);
         setCategories(data);
       });
-  }, []);
+  });
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded) return <div></div>;
   else
     return (
-      <>
+      <div className={classes.default.categoryList}>
         <ul>
           {categories.map((category) => (
-            <li key={category.id}>
+            <li className={classes.default.category} key={category.id}>
               <Category category={category} />
             </li>
           ))}
         </ul>
-      </>
+      </div>
     );
 }
 

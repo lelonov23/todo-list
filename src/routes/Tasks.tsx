@@ -14,9 +14,9 @@ function Tasks(props: PageProps) {
         setIsLoaded(true);
         setTodos(data);
       });
-  }, []);
+  });
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded) return <div></div>;
   else
     return (
       <div className={classes.default.taskList}>
