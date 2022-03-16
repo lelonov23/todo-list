@@ -1,29 +1,29 @@
 import * as classes from "./Header.module.css";
 import { Link } from "react-router-dom";
 
+import Modal from "./Modal";
+
 function Header(props: HeaderProps) {
   let isTasks = props.page === "tasks";
   let isCategories = props.page === "categories";
 
   let taskClasses = isTasks
-    ? `${classes.default.routerLink}` + " " + `${classes.default.active}`
+    ? `${classes.default.routerLink} ${classes.default.active}`
     : `${classes.default.routerLink}`;
 
   let catClasses = isCategories
-    ? `${classes.default.routerLink}` + " " + `${classes.default.active}`
+    ? `${classes.default.routerLink} ${classes.default.active}`
     : `${classes.default.routerLink}`;
 
   let addButton = isTasks ? (
-    <a className={classes.default.link} href="#">
+    <button className={classes.default.link} onClick={() => console.log("hi")}>
       Добавить задачу
-    </a>
+    </button>
   ) : (
-    <a className={classes.default.link} href="#">
+    <button className={classes.default.link} onClick={() => console.log("hi")}>
       Добавить категорию
-    </a>
+    </button>
   );
-
-  console.log(isTasks);
 
   return (
     <header className={classes.default.header}>
@@ -43,6 +43,7 @@ function Header(props: HeaderProps) {
         </ul>
       </div>
       {props.page ? addButton : null}
+      <Modal />
     </header>
   );
 }

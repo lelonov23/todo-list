@@ -1,3 +1,5 @@
+import * as classes from "./Task.module.css";
+
 import { useState, useEffect } from "react";
 
 function Task(props: TodoProps) {
@@ -21,14 +23,24 @@ function Task(props: TodoProps) {
       }
     }
     return (
-      <>
-        <h2>{props.todo.name}</h2>
-        <h3>
-          <i className="fa-solid fa-folder-open"></i>
-          {categoryName}
-        </h3>
-        <p>{props.todo.description}</p>
-      </>
+      <div className={classes.default.control}>
+        <div className={classes.default.taskInfo}>
+          <h2>{props.todo.name}</h2>
+          <h3>
+            <i className="fa-solid fa-folder-open"></i>
+            {categoryName}
+          </h3>
+          <p>{props.todo.description}</p>
+        </div>
+        <div className={classes.default.btn_control}>
+          <button className={classes.default.btn}>
+            <i className="fa-solid fa-pen"></i>
+          </button>
+          <button className={classes.default.btn}>
+            <i className="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </div>
     );
   }
   return (
