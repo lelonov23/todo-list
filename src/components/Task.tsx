@@ -23,7 +23,10 @@ function Task(props: TodoProps) {
     return (
       <>
         <h2>{props.todo.name}</h2>
-        <h3>{categoryName}</h3>
+        <h3>
+          <i className="fa-solid fa-folder-open"></i>
+          {categoryName}
+        </h3>
         <p>{props.todo.description}</p>
       </>
     );

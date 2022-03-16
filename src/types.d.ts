@@ -18,3 +18,13 @@ interface TodoProps {
 interface CategoryProps {
   category: Category;
 }
+
+interface PageProps {
+  pageSetter: React.Dispatch<React.SetStateAction<PageState>>;
+}
+
+interface HeaderProps {
+  page: PageState;
+}
+
+type PageState = "tasks" | "categories" | null;
