@@ -1,11 +1,30 @@
 import * as classes from "./Header.module.css";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import Modal from "./Modal";
 
 function Header(props: HeaderProps) {
+  const [show, setShow] = useState(false);
+
   let isTasks = props.page === "tasks";
   let isCategories = props.page === "categories";
+
+  let createTodoModal = (
+    <Modal onClose={() => setShow(false)} show={show}>
+      <form method="post" action="#">
+        <input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Введите имя задачи"
+          required
+        />
+        <button>Создать</button>
+        <button onClick={() => setShow(false)}>Закрыть</button>
+      </form>
+    </Modal>
+  );
 
   let taskClasses = isTasks
     ? `${classes.default.routerLink} ${classes.default.active}`
@@ -16,7 +35,7 @@ function Header(props: HeaderProps) {
     : `${classes.default.routerLink}`;
 
   let addButton = isTasks ? (
-    <button className={classes.default.link} onClick={() => console.log("hi")}>
+    <button className={classes.default.link} onClick={() => setShow(true)}>
       Добавить задачу
     </button>
   ) : (
@@ -43,7 +62,8 @@ function Header(props: HeaderProps) {
         </ul>
       </div>
       {props.page ? addButton : null}
-      <Modal />
+      {isTasks && createTodoModal}
+      {/* {isCategories && createCategoryModal} */}
     </header>
   );
 }

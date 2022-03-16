@@ -27,4 +27,10 @@ interface HeaderProps {
   page: PageState;
 }
 
+interface ModalProps {
+  children: React.ReactNode;
+  show?: boolean;
+  onClose: () => void;
+}
+
 type PageState = "tasks" | "categories" | null;
