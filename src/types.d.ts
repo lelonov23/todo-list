@@ -17,6 +17,11 @@ interface TodoData {
   categoryId?: number;
 }
 
+interface CatData {
+  name: string;
+  description?: string;
+}
+
 interface TodoProps {
   todo: Todo;
 }
