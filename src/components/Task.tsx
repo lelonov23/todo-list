@@ -44,10 +44,20 @@ function Task(props: TodoProps) {
     );
   }
   return (
-    <>
-      <h2>{props.todo.name}</h2>
-      <p>{props.todo.description}</p>
-    </>
+    <div className={classes.default.control}>
+      <div className={classes.default.taskInfo}>
+        <h2>{props.todo.name}</h2>
+        <p>{props.todo.description}</p>
+      </div>
+      <div className={classes.default.btn_control}>
+        <button className={classes.default.btn}>
+          <i className="fa-solid fa-pen"></i>
+        </button>
+        <button className={classes.default.btn}>
+          <i className="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </div>
   );
 }
 

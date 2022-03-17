@@ -41,31 +41,66 @@ function Header(props: HeaderProps) {
   };
 
   let createTodoModal = (
-    <Modal onClose={() => setShow(false)} show={show}>
-      <form method="post" action="#" onSubmit={(e) => handleSubmitTodo(e)}>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          onChange={(e) => setNameInput(e.target.value)}
-          placeholder="Введите имя задачи"
-          required
-        />
-        <input
-          id="description"
-          name="description"
-          type="text"
-          onChange={(e) => setDescInput(e.target.value)}
-          placeholder="Введите описание задачи"
-        />
-        <button>Создать</button>
-        <button onClick={() => setShow(false)}>Закрыть</button>
+    <Modal
+      onClose={() => {
+        setShow(false);
+        setNameInput("");
+        setDescInput("");
+      }}
+      show={show}
+    >
+      <h2>Создание задачи</h2>
+      <form
+        className={classes.default.todoForm}
+        onSubmit={(e) => handleSubmitTodo(e)}
+      >
+        <div className={classes.default.inputsControl}>
+          <div className={classes.default.textOnInput}>
+            <label htmlFor="name">Имя</label>
+            <input
+              className={classes.default.formControl}
+              id="name"
+              name="name"
+              type="text"
+              onChange={(e) => setNameInput(e.target.value)}
+              placeholder="Введите имя задачи"
+              required
+            />
+          </div>
+          <div className={classes.default.textOnInput}>
+            <label htmlFor="desc">Описание</label>
+            <input
+              className={classes.default.formControl}
+              id="desc"
+              name="description"
+              type="text"
+              onChange={(e) => setDescInput(e.target.value)}
+              placeholder="Введите описание задачи"
+              required
+            />
+          </div>
+        </div>
+
+        <div className={classes.default.btnControl}>
+          <button className={classes.default.btnAction}>Создать</button>
+          <button
+            className={classes.default.btnCancel}
+            onClick={() => {
+              setShow(false);
+              setNameInput("");
+              setDescInput("");
+            }}
+          >
+            Закрыть
+          </button>
+        </div>
       </form>
     </Modal>
   );
 
   let createCategoryModal = (
     <Modal onClose={() => setShow(false)} show={show}>
+      <h2>Создание категории</h2>
       <form method="post" action="#">
         <input
           id="name"

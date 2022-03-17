@@ -61,3 +61,95 @@
 .modal {
   display: none;
 }
+
+.todoForm {
+  padding: 1rem 0 0 0;
+}
+
+.todoForm button {
+  padding: 0.3rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  margin-left: 1rem;
+  border: 2px solid #3f72af;
+  border-radius: 4px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #3f72af;
+}
+
+.btnAction {
+  background-color: #3f72af;
+  color: #fff !important;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
+
+.btnControl {
+  padding: 1rem 0 0 0;
+  text-align: right;
+}
+
+.textOnInput {
+  position: relative;
+}
+
+.textOnInput label {
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  padding: 2px;
+  z-index: 1;
+  color: #3f72af;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.textOnInput label:after {
+  content: " ";
+  background-color: #dbe2ef;
+  width: 100%;
+  height: 15px;
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  z-index: -1;
+}
+
+label {
+  font-size: 16px;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.formControl {
+  box-shadow: none !important;
+  background-color: #dbe2ef;
+  border: 2px solid #3f72af;
+  padding: 0.5rem;
+  border-radius: 4px;
+  width: 16rem;
+  font-size: 20px;
+}
+
+.formControl:hover,
+.formControl:focus {
+  background-color: #dbe2ef;
+  border: 2px solid #257fea !important;
+  outline: none !important;
+}
+
+.formControl:hover + label,
+.textOnInput input:focus + label {
+  color: #257fea !important;
+}
+
+.inputsControl {
+  display: flex;
+}
+
+.inputsControl div:first-child {
+  margin-right: 1rem;
+}
