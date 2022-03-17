@@ -44,4 +44,8 @@ interface ModalProps {
   onClose: () => void;
 }
 
+interface CreateFormProps {
+  onClose: () => void;
+}
+
 type PageState = "tasks" | "categories" | null;
