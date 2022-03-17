@@ -6,8 +6,13 @@ function Modal(props: ModalProps) {
   }
 
   return (
-    <div className={classes.default.modal}>
-      <div className={classes.default.modalContent}>{props.children}</div>
+    <div className={classes.default.modal} onClick={props.onClose}>
+      <div
+        className={classes.default.modalContent}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {props.children}
+      </div>
     </div>
   );
 }

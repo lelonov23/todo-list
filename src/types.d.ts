@@ -11,6 +11,12 @@ interface Category {
   description: string;
 }
 
+interface TodoData {
+  name: string;
+  description?: string;
+  categoryId?: number;
+}
+
 interface TodoProps {
   todo: Todo;
 }
