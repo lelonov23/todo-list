@@ -9,12 +9,16 @@ function Task(props: TodoProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [show, setShow] = useState(false);
   useEffect(() => {
+    let abortController = new AbortController();
     fetch("http://localhost:8089/api/ToDoList/GetCategories")
       .then((res) => res.json())
       .then((data: Category[]) => {
         setCategories(data);
         setIsCategorized(true);
       });
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   const handleDelete = (id: number) => {

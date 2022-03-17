@@ -23,6 +23,8 @@ function CreateCategoryForm(props: CreateFormProps) {
     });
     await res.json().then(() => {
       props.onClose();
+      setNameInput("");
+      setDescInput("");
     });
   };
 
@@ -62,7 +64,8 @@ function CreateCategoryForm(props: CreateFormProps) {
         <div className={classes.default.btnControl}>
           <button className={classes.default.btnAction}>Создать</button>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               props.onClose();
               setNameInput("");
               setDescInput("");

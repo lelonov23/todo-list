@@ -7,6 +7,7 @@ function Categories(props: PageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
+    let abortController = new AbortController();
     props.pageSetter("categories");
     fetch("http://localhost:8089/api/ToDoList/GetCategories")
       .then((res) => res.json())
@@ -14,6 +15,9 @@ function Categories(props: PageProps) {
         setIsLoaded(true);
         setCategories(data);
       });
+    return () => {
+      abortController.abort();
+    };
   });
 
   if (!isLoaded) return <div></div>;
