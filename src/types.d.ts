@@ -19,7 +19,7 @@ interface TodoData {
 
 interface CatData {
   name: string;
-  description?: string | null;
+  description?: string;
 }
 
 interface TodoProps {
