@@ -1,10 +1,13 @@
 import * as classes from "./Task.module.css";
 
+import Modal from "./Modal";
+
 import { useState, useEffect } from "react";
 
 function Task(props: TodoProps) {
   const [isCategorized, setIsCategorized] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     fetch("http://localhost:8089/api/ToDoList/GetCategories")
       .then((res) => res.json())
@@ -13,6 +16,12 @@ function Task(props: TodoProps) {
         setIsCategorized(true);
       });
   }, []);
+
+  const handleDelete = (id: number) => {
+    fetch(`http://localhost:8089/api/ToDoList/RemoveTask/${id}`).then(() =>
+      setShow(false)
+    );
+  };
 
   if (!isCategorized) return <div></div>;
   else if (props.todo.categoryId) {
@@ -36,10 +45,28 @@ function Task(props: TodoProps) {
           <button className={classes.default.btn}>
             <i className="fa-solid fa-pen"></i>
           </button>
-          <button className={classes.default.btn}>
+          <button className={classes.default.btn} onClick={() => setShow(true)}>
             <i className="fa-solid fa-trash"></i>
           </button>
         </div>
+        <Modal onClose={() => setShow(false)} show={show}>
+          <div>Уверены?</div>
+          <div className={classes.default.btnControl}>
+            <button
+              className={classes.default.btnAction}
+              onClick={() => handleDelete(props.todo.id)}
+            >
+              Удалить
+            </button>
+            <button
+              onClick={() => {
+                setShow(false);
+              }}
+            >
+              Закрыть
+            </button>
+          </div>
+        </Modal>
       </div>
     );
   }
@@ -53,10 +80,28 @@ function Task(props: TodoProps) {
         <button className={classes.default.btn}>
           <i className="fa-solid fa-pen"></i>
         </button>
-        <button className={classes.default.btn}>
+        <button className={classes.default.btn} onClick={() => setShow(true)}>
           <i className="fa-solid fa-trash"></i>
         </button>
       </div>
+      <Modal onClose={() => setShow(false)} show={show}>
+        <div>Уверены?</div>
+        <div className={classes.default.btnControl}>
+          <button
+            className={classes.default.btnAction}
+            onClick={() => handleDelete(props.todo.id)}
+          >
+            Удалить
+          </button>
+          <button
+            onClick={() => {
+              setShow(false);
+            }}
+          >
+            Закрыть
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }
