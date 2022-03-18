@@ -30,13 +30,13 @@ interface CategoryProps {
   category: Category;
 }
 
-interface PageProps {
-  pageSetter: React.Dispatch<React.SetStateAction<PageState>>;
-}
+// interface PageProps {
+//   pageSetter: React.Dispatch<React.SetStateAction<PageState>>;
+// }
 
-interface HeaderProps {
-  page: PageState;
-}
+// interface HeaderProps {
+//   page: PageState;
+// }
 
 interface ModalProps {
   children: React.ReactNode;
@@ -49,3 +49,8 @@ interface CreateFormProps {
 }
 
 type PageState = "tasks" | "categories" | null;
+
+type PageContext = {
+  page: PageState;
+  setPage: React.Dispatch<React.SetStateAction<PageState>>;
+};

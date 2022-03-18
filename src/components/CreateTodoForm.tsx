@@ -1,10 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import * as classes from "./CreateTodoForm.module.css";
 
 function CreateTodoForm(props: CreateFormProps) {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
+  const [catInput, setCatInput] = useState<number | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    let abortController = new AbortController();
+    fetch("http://localhost:8089/api/ToDoList/GetCategories")
+      .then((res) => res.json())
+      .then((data: Category[]) => {
+        setCategories(data);
+      });
+    return () => {
+      abortController.abort();
+    };
+  }, []);
 
   const handleSubmitTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,8 +27,8 @@ function CreateTodoForm(props: CreateFormProps) {
       todoData["description"] = descInput;
     }
 
-    if (true) {
-      todoData["categoryId"] = 1;
+    if (catInput) {
+      todoData["categoryId"] = catInput;
     }
 
     const res = await fetch("http://localhost:8089/api/ToDoList/AddTask", {
@@ -29,6 +43,7 @@ function CreateTodoForm(props: CreateFormProps) {
       props.onClose();
       setNameInput("");
       setDescInput("");
+      setCatInput(null);
     });
   };
 
@@ -52,6 +67,22 @@ function CreateTodoForm(props: CreateFormProps) {
               required
             />
           </div>
+          <div className={classes.default.select}>
+            <label htmlFor="cat">Категория</label>
+            <select
+              name="category"
+              id="cat"
+              onChange={(e) => setCatInput(+e.target.value)}
+            >
+              {categories.map((category) => {
+                return (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
           <div className={classes.default.textOnInput}>
             <label htmlFor="desc">Описание</label>
             <input
@@ -74,6 +105,7 @@ function CreateTodoForm(props: CreateFormProps) {
               props.onClose();
               setNameInput("");
               setDescInput("");
+              setCatInput(null);
             }}
           >
             Закрыть

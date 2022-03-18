@@ -1,14 +1,17 @@
 import * as classes from "./Tasks.module.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Task from "../components/Task";
 
-function Tasks(props: PageProps) {
+import { PageContext } from "../App";
+
+function Tasks() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
+  const { setPage } = useContext(PageContext);
   useEffect(() => {
     let abortController = new AbortController();
-    props.pageSetter("tasks");
+    setPage("tasks");
     fetch("http://localhost:8089/api/ToDoList/GetTasks")
       .then((res) => res.json())
       .then((data) => {

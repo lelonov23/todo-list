@@ -1,17 +1,19 @@
 import * as classes from "./Header.module.css";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, { useState, useContext } from "react";
 
 import Modal from "./Modal";
 import CreateTodoForm from "./CreateTodoForm";
 import CreateCategoryForm from "./CreateCategoryForm";
+import { PageContext } from "../App";
 
-function Header(props: HeaderProps) {
+function Header() {
   const [show, setShow] = useState(false);
 
-  let isTasks = props.page === "tasks";
-  let isCategories = props.page === "categories";
+  const { page } = useContext(PageContext);
+
+  let isTasks = page === "tasks";
+  let isCategories = page === "categories";
 
   let createTodoModal = (
     <Modal
@@ -78,7 +80,7 @@ function Header(props: HeaderProps) {
           </li>
         </ul>
       </div>
-      {props.page ? addButton : null}
+      {page ? addButton : null}
       {isTasks && createTodoModal}
       {isCategories && createCategoryModal}
     </header>

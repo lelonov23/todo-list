@@ -1,14 +1,17 @@
 import * as classes from "./Categories.module.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Category from "../components/Category";
+import { PageContext } from "../App";
 
-function Categories(props: PageProps) {
+function Categories() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const { setPage } = useContext(PageContext);
+
   useEffect(() => {
     let abortController = new AbortController();
-    props.pageSetter("categories");
+    setPage("categories");
     fetch("http://localhost:8089/api/ToDoList/GetCategories")
       .then((res) => res.json())
       .then((data) => {
