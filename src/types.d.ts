@@ -30,14 +30,6 @@ interface CategoryProps {
   category: Category;
 }
 
-// interface PageProps {
-//   pageSetter: React.Dispatch<React.SetStateAction<PageState>>;
-// }
-
-// interface HeaderProps {
-//   page: PageState;
-// }
-
 interface ModalProps {
   children: React.ReactNode;
   show?: boolean;

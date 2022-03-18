@@ -74,6 +74,7 @@ function CreateTodoForm(props: CreateFormProps) {
               id="cat"
               onChange={(e) => setCatInput(+e.target.value)}
             >
+              <option selected>-Выберите категорию-</option>
               {categories.map((category) => {
                 return (
                   <option key={category.id} value={category.id}>
