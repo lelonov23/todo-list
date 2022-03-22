@@ -1,28 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import * as classes from "./CreateTodoForm.module.css";
+
+import { PageContext } from "../App";
+
+import Dropdown from "./Dropdown";
 
 function CreateTodoForm(props: CreateFormProps) {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
   const [catInput, setCatInput] = useState<number | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const {
+    todos,
+    setTodos,
+    selectList,
+    setSelectList,
+    isListOpen,
+    setIsListOpen,
+  } = useContext(PageContext);
 
-  useEffect(() => {
-    let abortController = new AbortController();
-    fetch("http://localhost:8089/api/ToDoList/GetCategories")
-      .then((res) => res.json())
-      .then((data: Category[]) => {
-        setCategories(data);
-      });
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  const onSelect = (id: number | null) => {
+    setCatInput(id);
+  };
+
+  const resetThenSet = (id: number | null) => {
+    const temp = [...selectList];
+    const newSelectData: CategorySelect[] = temp.map((cat) => {
+      if (cat.id === id) {
+        cat.selected = true;
+      } else cat.selected = false;
+      return cat;
+    });
+    setSelectList(newSelectData);
+  };
 
   const handleSubmitTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const todoData: TodoData = { name: nameInput };
+    const todoData: TodoData = { name: nameInput, categoryId: undefined };
     if (descInput) {
       todoData["description"] = descInput;
     }
@@ -39,16 +53,17 @@ function CreateTodoForm(props: CreateFormProps) {
       },
       body: JSON.stringify(todoData),
     });
-    await res.json().then(() => {
-      props.onClose();
+    await res.json().then((data) => {
+      setTodos([...todos, data]);
       setNameInput("");
       setDescInput("");
       setCatInput(null);
+      props.onClose();
     });
   };
 
   return (
-    <>
+    <div onClick={() => setIsListOpen(false)}>
       <h2>Создание задачи</h2>
       <form
         className={classes.default.todoForm}
@@ -67,8 +82,12 @@ function CreateTodoForm(props: CreateFormProps) {
               required
             />
           </div>
-          <div className={classes.default.select}>
-            <label htmlFor="cat">Категория</label>
+
+          <div
+            className={classes.default.select}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* <label htmlFor="cat">Категория</label>
             <select
               name="category"
               id="cat"
@@ -82,7 +101,14 @@ function CreateTodoForm(props: CreateFormProps) {
                   </option>
                 );
               })}
-            </select>
+            </select> */}
+            <Dropdown
+              title="Выберите категорию"
+              list={selectList}
+              resetThenSet={resetThenSet}
+              onSelect={onSelect}
+              isListOpen={[isListOpen, setIsListOpen]}
+            />
           </div>
           <div className={classes.default.textOnInput}>
             <label htmlFor="desc">Описание</label>
@@ -103,17 +129,17 @@ function CreateTodoForm(props: CreateFormProps) {
           <button
             onClick={(e) => {
               e.preventDefault();
-              props.onClose();
               setNameInput("");
               setDescInput("");
               setCatInput(null);
+              props.onClose();
             }}
           >
             Закрыть
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

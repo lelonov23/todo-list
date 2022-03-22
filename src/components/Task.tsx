@@ -2,30 +2,28 @@ import * as classes from "./Task.module.css";
 
 import Modal from "./Modal";
 
-import { useState, useEffect } from "react";
+import { PageContext } from "../App";
+
+import { useState, useContext } from "react";
 
 function Task(props: TodoProps) {
-  const [isCategorized, setIsCategorized] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  useEffect(() => {
-    let abortController = new AbortController();
-    fetch("http://localhost:8089/api/ToDoList/GetCategories")
-      .then((res) => res.json())
-      .then((data: Category[]) => {
-        setCategories(data);
-        setIsCategorized(true);
+
+  const { categories, todos, setTodos } = useContext(PageContext);
+
+  const handleDelete = (id: number) => {
+    const abortController = new AbortController();
+    fetch(`http://localhost:8089/api/ToDoList/RemoveTask/${id}`)
+      .then((res) => {
+        setShowDelete(false);
+      })
+      .then(() => {
+        setTodos(todos.filter((todo) => todo.id !== id));
       });
     return () => {
       abortController.abort();
     };
-  }, []);
-
-  const handleDelete = (id: number) => {
-    fetch(`http://localhost:8089/api/ToDoList/RemoveTask/${id}`).then(() =>
-      setShowDelete(false)
-    );
   };
 
   let categoryName: string = "";
@@ -37,7 +35,7 @@ function Task(props: TodoProps) {
     }
   }
 
-  if (!isCategorized) return <div></div>;
+  if (!categories) return <div></div>;
   return (
     <div className={classes.default.control}>
       <div className={classes.default.taskInfo}>
@@ -83,22 +81,7 @@ function Task(props: TodoProps) {
         </div>
       </Modal>
       <Modal onClose={() => setShowEdit(false)} show={showEdit}>
-        <div>Уверены?</div>
-        <div className={classes.default.btnControl}>
-          <button
-            className={classes.default.btnAction}
-            // onClick={() => handleDelete(props.todo.id)}
-          >
-            Удалить
-          </button>
-          <button
-            onClick={() => {
-              setShowEdit(false);
-            }}
-          >
-            Закрыть
-          </button>
-        </div>
+        <></>
       </Modal>
     </div>
   );

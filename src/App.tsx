@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import Header from "./components/Header";
 import Tasks from "./routes/Tasks";
 import Categories from "./routes/Categories";
@@ -8,14 +8,69 @@ import { Route, Routes } from "react-router-dom";
 export const PageContext = createContext<PageContext>({
   page: null,
   setPage: () => {},
+  categories: [],
+  setCategories: () => {},
+  todos: [],
+  setTodos: () => {},
+  selectList: [],
+  setSelectList: () => {},
+  isListOpen: false,
+  setIsListOpen: () => {},
 });
 
 function App() {
+  // const [isLoaded, setIsLoaded] = useState(false);
   const [page, setPage] = useState<PageState>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectList, setSelectList] = useState<CategorySelect[]>([
+    { id: 0, title: "Выберите категорию", selected: true, key: "category" },
+  ]);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [isListOpen, setIsListOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("http://localhost:8089/api/ToDoList/GetCategories")
+      .then((res) => res.json())
+      .then((data) => {
+        setCategories(data);
+        console.log(categories);
+      });
+
+    fetch("http://localhost:8089/api/ToDoList/GetTasks")
+      .then((res) => res.json())
+      .then((data) => {
+        setTodos(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    const selectData = categories.map((cat) => {
+      return {
+        id: cat.id,
+        title: cat.name,
+        selected: false,
+        key: "category",
+      };
+    });
+    setSelectList([...selectList, ...selectData]);
+  }, [categories]);
 
   return (
     <div className="App">
-      <PageContext.Provider value={{ page, setPage }}>
+      <PageContext.Provider
+        value={{
+          page,
+          setPage,
+          categories,
+          setCategories,
+          todos,
+          setTodos,
+          selectList,
+          setSelectList,
+          isListOpen,
+          setIsListOpen,
+        }}
+      >
         <Header />
         <Routes>
           <Route path="/tasks" element={<Tasks />} />

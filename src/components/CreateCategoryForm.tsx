@@ -22,9 +22,9 @@ function CreateCategoryForm(props: CreateFormProps) {
       body: JSON.stringify(catData),
     });
     await res.json().then(() => {
-      props.onClose();
       setNameInput("");
       setDescInput("");
+      props.onClose();
     });
   };
 
@@ -66,9 +66,9 @@ function CreateCategoryForm(props: CreateFormProps) {
           <button
             onClick={(e) => {
               e.preventDefault();
-              props.onClose();
               setNameInput("");
               setDescInput("");
+              props.onClose();
             }}
           >
             Закрыть
