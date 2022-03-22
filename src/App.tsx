@@ -33,7 +33,6 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setCategories(data);
-        console.log(categories);
       });
 
     fetch("http://localhost:8089/api/ToDoList/GetTasks")
