@@ -12,6 +12,7 @@
 
 .modalContent {
   padding: 1rem;
+  position: relative;
   display: flex;
   flex-direction: column;
   background: #dbe2ef;
@@ -25,4 +26,12 @@
   font-weight: 500;
   color: #3f72af;
   margin: 0;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2.3rem;
+  color: #3f72af;
 }

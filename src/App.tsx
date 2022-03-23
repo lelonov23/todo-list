@@ -19,7 +19,6 @@ export const PageContext = createContext<PageContext>({
 });
 
 function App() {
-  // const [isLoaded, setIsLoaded] = useState(false);
   const [page, setPage] = useState<PageState>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectList, setSelectList] = useState<CategorySelect[]>([
@@ -39,7 +38,6 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setTodos(data);
-        console.log(data);
       });
   }, []);
 
@@ -52,8 +50,6 @@ function App() {
         key: "category",
       };
     });
-    console.log(categories);
-    console.log(todos);
     setSelectList([
       { id: 0, title: "Выберите категорию", selected: true, key: "category" },
       ...selectData,

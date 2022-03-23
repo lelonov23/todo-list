@@ -12,6 +12,9 @@ function Modal(props: ModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {props.children}
+        <button className={classes.default.close} onClick={props.onClose}>
+          <i className="fa-solid fa-xmark"></i>
+        </button>
       </div>
     </div>
   );

@@ -27,6 +27,7 @@
 
 .wrapper {
   position: relative;
+  margin: 0 !important;
 }
 
 .list {

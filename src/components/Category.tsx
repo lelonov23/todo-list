@@ -73,13 +73,18 @@ function Category(props: CategoryProps) {
           <i className="fa-solid fa-trash"></i>
         </button>
       </div>
-      <Modal onClose={() => setShowDelete(false)} show={showEdit}>
+      <Modal onClose={() => setShowEdit(false)} show={showEdit}>
         <UpdateCategoryForm
           id={props.category.id}
           onClose={() => setShowEdit(false)}
         />
       </Modal>
-      <Modal onClose={() => setShowDelete(false)} show={showDelete}>
+      <Modal
+        onClose={() => {
+          setShowDelete(false);
+        }}
+        show={showDelete}
+      >
         <div>Уверены?</div>
         <div className={classes.default.btnControl}>
           <button

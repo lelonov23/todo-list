@@ -84,9 +84,10 @@ function CreateTodoForm(props: CreateFormProps) {
           </div>
 
           <div
-            className={classes.default.select}
+            className={classes.default.textOnInput}
             onClick={(e) => e.stopPropagation()}
           >
+            <label className={classes.default.dropdownLabel}>Категория</label>
             <Dropdown
               title="Выберите категорию"
               list={selectList}
@@ -95,18 +96,16 @@ function CreateTodoForm(props: CreateFormProps) {
               isListOpen={[isListOpen, setIsListOpen]}
             />
           </div>
-          <div className={classes.default.textOnInput}>
-            <label htmlFor="desc">Описание</label>
-            <input
-              className={classes.default.formControl}
-              id="desc"
-              name="description"
-              type="text"
-              onChange={(e) => setDescInput(e.target.value)}
-              placeholder="Введите описание задачи"
-              required
-            />
-          </div>
+        </div>
+        <div className={classes.default.textOnInput}>
+          <label htmlFor="desc">Описание</label>
+          <textarea
+            className={classes.default.formControl}
+            id="desc"
+            name="description"
+            onChange={(e) => setDescInput(e.target.value)}
+            placeholder="Введите описание задачи"
+          />
         </div>
 
         <div className={classes.default.btnControl}>

@@ -73,7 +73,7 @@ function UpdateCategoryForm(props: UpdateFormProps) {
           </div>
         </div>
         <div className={classes.default.btnControl}>
-          <button className={classes.default.btnAction}>Создать</button>
+          <button className={classes.default.btnAction}>Редактировать</button>
           <button
             onClick={(e) => {
               e.preventDefault();
