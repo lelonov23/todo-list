@@ -1,15 +1,56 @@
 import * as classes from "./Task.module.css";
 import Modal from "./Modal";
+import UpdateCategoryForm from "./UpdateCategoryForm";
+import { PageContext } from "../App";
 
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 
 function Category(props: CategoryProps) {
-  const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const { todos, setCategories, categories, setTodos } =
+    useContext(PageContext);
 
   const handleDelete = (id: number) => {
-    fetch(`http://localhost:8089/api/ToDoList/RemoveCategory/${id}`).then(() =>
-      setShow(false)
+    const abortController = new AbortController();
+    const todosToUpdate = todos.filter((todo) => todo.categoryId === id);
+    todosToUpdate.forEach((todo) => {
+      let todoData = {
+        id: todo.id,
+        name: todo.name,
+        description: todo.description,
+        categoryId: 0,
+      };
+      fetch("http://localhost:8089/api/ToDoList/UpdateTask", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(todoData),
+      })
+        .then((res) => res.json())
+        .then((data: Todo) => {
+          const newTodos = todos.map((todo) => {
+            if (todo.id === data.id) {
+              let newTodo: Todo = {
+                id: data.id,
+                name: data.name,
+                description: data.description,
+              };
+              return newTodo;
+            } else return todo;
+          });
+          setTodos(newTodos);
+        });
+    });
+    fetch(`http://localhost:8089/api/ToDoList/RemoveCategory/${id}`).then(
+      () => {
+        setCategories(categories.filter((cat) => cat.id !== id));
+        setShowDelete(false);
+      }
     );
+    return () => abortController.abort();
   };
 
   return (
@@ -19,14 +60,26 @@ function Category(props: CategoryProps) {
         <p>{props.category.description}</p>
       </div>
       <div className={classes.default.btn_control}>
-        <button className={classes.default.btn}>
+        <button
+          className={classes.default.btn}
+          onClick={() => setShowEdit(true)}
+        >
           <i className="fa-solid fa-pen"></i>
         </button>
-        <button className={classes.default.btn} onClick={() => setShow(true)}>
+        <button
+          className={classes.default.btn}
+          onClick={() => setShowDelete(true)}
+        >
           <i className="fa-solid fa-trash"></i>
         </button>
       </div>
-      <Modal onClose={() => setShow(false)} show={show}>
+      <Modal onClose={() => setShowDelete(false)} show={showEdit}>
+        <UpdateCategoryForm
+          id={props.category.id}
+          onClose={() => setShowEdit(false)}
+        />
+      </Modal>
+      <Modal onClose={() => setShowDelete(false)} show={showDelete}>
         <div>Уверены?</div>
         <div className={classes.default.btnControl}>
           <button
@@ -37,7 +90,7 @@ function Category(props: CategoryProps) {
           </button>
           <button
             onClick={() => {
-              setShow(false);
+              setShowDelete(false);
             }}
           >
             Закрыть

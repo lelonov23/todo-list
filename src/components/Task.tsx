@@ -40,7 +40,7 @@ function Task(props: TodoProps) {
     <div className={classes.default.control}>
       <div className={classes.default.taskInfo}>
         <h2>{props.todo.name}</h2>
-        {props.todo.categoryId ? (
+        {props.todo.categoryId && props.todo.categoryId !== 0 ? (
           <h3>
             <i className="fa-solid fa-folder-open"></i>
             {categoryName}
@@ -62,7 +62,12 @@ function Task(props: TodoProps) {
           <i className="fa-solid fa-trash"></i>
         </button>
       </div>
-      <Modal onClose={() => setShowDelete(false)} show={showDelete}>
+      <Modal
+        onClose={() => setShowDelete(false)}
+        show={showDelete}
+        // onSubmit={() => handleDelete(props.todo.id)}
+        // submitText="Удалить"
+      >
         <div>Уверены?</div>
         <div className={classes.default.btnControl}>
           <button

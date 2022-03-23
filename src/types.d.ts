@@ -1,23 +1,25 @@
 interface Todo {
   id: number;
   name: string;
-  description: string;
-  categoryId: number | null;
+  description?: string;
+  categoryId?: number | null | undefined;
 }
 
 interface Category {
   id: number;
   name: string;
-  description: string;
+  description?: string;
 }
 
 interface TodoData {
+  id?: number;
   name: string;
   description?: string;
   categoryId?: number;
 }
 
 interface CatData {
+  id?: number;
   name: string;
   description?: string;
 }
@@ -34,22 +36,29 @@ interface ModalProps {
   children: React.ReactNode;
   show?: boolean;
   onClose: () => void;
+  // onSubmit: () => void;
+  // submitText: string;
 }
 
 interface CreateFormProps {
   onClose: () => void;
 }
 
+interface UpdateFormProps {
+  onClose: () => void;
+  id: number;
+}
+
 interface DropdownProps {
-  onSelect: (id: number | null) => void;
+  onSelect: (id: number) => void;
   title: string;
   isListOpen: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  resetThenSet: (id: number | null) => void;
+  resetThenSet: (id: number) => void;
   list: CategorySelect[];
 }
 
 type CategorySelect = {
-  id: number | null;
+  id: number;
   title: string;
   selected: boolean;
   key: string;

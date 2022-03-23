@@ -4,37 +4,43 @@ import { PageContext } from "../App";
 
 import * as classes from "./CreateTodoForm.module.css";
 
-function CreateCategoryForm(props: CreateFormProps) {
-  const [nameInput, setNameInput] = useState("");
-  const [descInput, setDescInput] = useState("");
+function UpdateCategoryForm(props: UpdateFormProps) {
   const { categories, setCategories } = useContext(PageContext);
+  const { id } = props;
+  const catToUpdate = categories.filter((category) => category.id === id)[0];
+  const [nameInput, setNameInput] = useState(catToUpdate.name);
+  const [descInput, setDescInput] = useState(catToUpdate.description);
 
   const handleSubmitCategory = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const catData: CatData = { name: nameInput };
+    const catData: CatData = { id: id, name: nameInput };
     if (descInput) {
       catData["description"] = descInput;
     }
 
-    const res = await fetch("http://localhost:8089/api/ToDoList/AddCategory", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(catData),
-    });
+    const res = await fetch(
+      "http://localhost:8089/api/ToDoList/UpdateCategory",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(catData),
+      }
+    );
     await res.json().then((data: Category) => {
-      setCategories([...categories, data]);
-      setNameInput("");
-      setDescInput("");
+      const newCats: Category[] = categories.filter(
+        (category) => category.id !== data.id
+      );
+      setCategories([...newCats, data]);
       props.onClose();
     });
   };
 
   return (
     <>
-      <h2>Создание категории</h2>
+      <h2>Редактирование категории</h2>
       <form
         className={classes.default.categoryForm}
         onSubmit={(e) => handleSubmitCategory(e)}
@@ -47,6 +53,7 @@ function CreateCategoryForm(props: CreateFormProps) {
               id="name"
               name="name"
               type="text"
+              value={nameInput}
               onChange={(e) => setNameInput(e.target.value)}
               placeholder="Введите имя категории"
               required
@@ -61,7 +68,7 @@ function CreateCategoryForm(props: CreateFormProps) {
               type="text"
               onChange={(e) => setDescInput(e.target.value)}
               placeholder="Введите описание категории"
-              required
+              value={descInput}
             />
           </div>
         </div>
@@ -70,8 +77,6 @@ function CreateCategoryForm(props: CreateFormProps) {
           <button
             onClick={(e) => {
               e.preventDefault();
-              setNameInput("");
-              setDescInput("");
               props.onClose();
             }}
           >
@@ -83,4 +88,4 @@ function CreateCategoryForm(props: CreateFormProps) {
   );
 }
 
-export default CreateCategoryForm;
+export default UpdateCategoryForm;

@@ -9,7 +9,7 @@ import Dropdown from "./Dropdown";
 function CreateTodoForm(props: CreateFormProps) {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
-  const [catInput, setCatInput] = useState<number | null>(null);
+  const [catInput, setCatInput] = useState<number>(0);
   const {
     todos,
     setTodos,
@@ -19,11 +19,11 @@ function CreateTodoForm(props: CreateFormProps) {
     setIsListOpen,
   } = useContext(PageContext);
 
-  const onSelect = (id: number | null) => {
+  const onSelect = (id: number) => {
     setCatInput(id);
   };
 
-  const resetThenSet = (id: number | null) => {
+  const resetThenSet = (id: number) => {
     const temp = [...selectList];
     const newSelectData: CategorySelect[] = temp.map((cat) => {
       if (cat.id === id) {
@@ -36,7 +36,7 @@ function CreateTodoForm(props: CreateFormProps) {
 
   const handleSubmitTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const todoData: TodoData = { name: nameInput, categoryId: undefined };
+    const todoData: TodoData = { name: nameInput, categoryId: 0 };
     if (descInput) {
       todoData["description"] = descInput;
     }
@@ -57,7 +57,7 @@ function CreateTodoForm(props: CreateFormProps) {
       setTodos([...todos, data]);
       setNameInput("");
       setDescInput("");
-      setCatInput(null);
+      setCatInput(0);
       props.onClose();
     });
   };
@@ -87,21 +87,6 @@ function CreateTodoForm(props: CreateFormProps) {
             className={classes.default.select}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* <label htmlFor="cat">Категория</label>
-            <select
-              name="category"
-              id="cat"
-              onChange={(e) => setCatInput(+e.target.value)}
-            >
-              <option selected>-Выберите категорию-</option>
-              {categories.map((category) => {
-                return (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                );
-              })}
-            </select> */}
             <Dropdown
               title="Выберите категорию"
               list={selectList}
@@ -131,7 +116,7 @@ function CreateTodoForm(props: CreateFormProps) {
               e.preventDefault();
               setNameInput("");
               setDescInput("");
-              setCatInput(null);
+              setCatInput(0);
               props.onClose();
             }}
           >

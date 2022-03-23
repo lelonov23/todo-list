@@ -39,6 +39,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setTodos(data);
+        console.log(data);
       });
   }, []);
 
@@ -51,7 +52,12 @@ function App() {
         key: "category",
       };
     });
-    setSelectList([...selectList, ...selectData]);
+    console.log(categories);
+    console.log(todos);
+    setSelectList([
+      { id: 0, title: "Выберите категорию", selected: true, key: "category" },
+      ...selectData,
+    ]);
   }, [categories]);
 
   return (
