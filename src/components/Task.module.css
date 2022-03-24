@@ -10,3 +10,15 @@
   margin: 0 0.5rem;
   color: #3f72af;
 }
+
+.btn_control {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-left: 1rem;
+}
+
+.taskInfo p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+}

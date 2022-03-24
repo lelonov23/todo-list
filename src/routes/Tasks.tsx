@@ -1,21 +1,28 @@
 import * as classes from "./Tasks.module.css";
 
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import Task from "../components/Task";
 
 import { PageContext } from "../App";
 
 function Tasks() {
-  const { setPage, todos } = useContext(PageContext);
+  const { setPage, todos, categories } = useContext(PageContext);
   useEffect(() => {
     let abortController = new AbortController();
+    // console.log(todos);
+    // console.log(categories);
     setPage("tasks");
     return () => {
       abortController.abort();
     };
   });
 
-  if (!todos) return <div></div>;
+  if (!todos || !todos.length)
+    return (
+      <div className={classes.default.no_tasks}>
+        <p>Пока задач нет, создайте новую</p>
+      </div>
+    );
   else
     return (
       <div className={classes.default.taskList}>

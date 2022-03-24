@@ -2,7 +2,7 @@ interface Todo {
   id: number;
   name: string;
   description?: string;
-  categoryId?: number | null | undefined;
+  categoryId: number;
 }
 
 interface Category {
@@ -15,7 +15,7 @@ interface TodoData {
   id?: number;
   name: string;
   description?: string;
-  categoryId?: number;
+  categoryId: number;
 }
 
 interface CatData {

@@ -1,6 +1,7 @@
 import * as classes from "./Task.module.css";
 
 import Modal from "./Modal";
+import UpdateTodoForm from "./UpdateTodoForm";
 
 import { PageContext } from "../App";
 
@@ -86,7 +87,7 @@ function Task(props: TodoProps) {
         </div>
       </Modal>
       <Modal onClose={() => setShowEdit(false)} show={showEdit}>
-        <></>
+        <UpdateTodoForm id={props.todo.id} onClose={() => setShowEdit(false)} />
       </Modal>
     </div>
   );

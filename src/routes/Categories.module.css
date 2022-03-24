@@ -39,3 +39,15 @@ p {
   font-weight: 400;
   padding-top: 0.5rem;
 }
+
+.no_cats {
+  margin: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no_cats p {
+  color: #3f72af;
+  display: inline-block;
+}

@@ -1,15 +1,13 @@
-import { useState, useEffect, useContext } from "react";
-
-import * as classes from "./CreateTodoForm.module.css";
+import { useState, useContext, useEffect } from "react";
 
 import { PageContext } from "../App";
 
 import Dropdown from "./Dropdown";
 
-function CreateTodoForm(props: CreateFormProps) {
-  const [nameInput, setNameInput] = useState("");
-  const [descInput, setDescInput] = useState("");
-  const [catInput, setCatInput] = useState<number>(0);
+import * as classes from "./CreateTodoForm.module.css";
+
+function UpdateTodoForm(props: UpdateFormProps) {
+  const { id } = props;
   const {
     todos,
     setTodos,
@@ -18,6 +16,10 @@ function CreateTodoForm(props: CreateFormProps) {
     isListOpen,
     setIsListOpen,
   } = useContext(PageContext);
+  const todoToUpdate = todos.filter((todo) => todo.id === id)[0];
+  const [nameInput, setNameInput] = useState(todoToUpdate.name);
+  const [descInput, setDescInput] = useState(todoToUpdate.description);
+  const [catInput, setCatInput] = useState(todoToUpdate.categoryId);
 
   const onSelect = (id: number) => {
     setCatInput(id);
@@ -36,18 +38,16 @@ function CreateTodoForm(props: CreateFormProps) {
 
   const handleSubmitTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const todoData: TodoData = { name: nameInput, categoryId: 0 };
+    const todoData: TodoData = {
+      id: id,
+      name: nameInput,
+      categoryId: catInput,
+    };
     if (descInput) {
       todoData["description"] = descInput;
     }
 
-    if (catInput) {
-      todoData["categoryId"] = catInput;
-    }
-
-    console.log(todoData);
-
-    const res = await fetch("http://localhost:8089/api/ToDoList/AddTask", {
+    const res = await fetch("http://localhost:8089/api/ToDoList/UpdateTask", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -55,19 +55,20 @@ function CreateTodoForm(props: CreateFormProps) {
       },
       body: JSON.stringify(todoData),
     });
-    await res.json().then((data) => {
-      setTodos([...todos, data]);
-      setNameInput("");
-      setDescInput("");
-      setCatInput(0);
-      resetThenSet(0);
+    await res.json().then((data: Todo) => {
+      const newTodos: Todo[] = todos.filter((todo) => todo.id !== data.id);
+      setTodos([...newTodos, data]);
       props.onClose();
     });
   };
 
+  useEffect(() => {
+    if (todoToUpdate.categoryId) resetThenSet(todoToUpdate.categoryId);
+  }, []);
+
   return (
-    <div onClick={() => setIsListOpen(false)}>
-      <h2>Создание задачи</h2>
+    <>
+      <h2>Редактирование задачи</h2>
       <form
         className={classes.default.todoForm}
         onSubmit={(e) => handleSubmitTodo(e)}
@@ -78,14 +79,14 @@ function CreateTodoForm(props: CreateFormProps) {
             <input
               className={classes.default.formControl}
               id="name"
-              name="todo-name"
+              name="name"
               type="text"
+              value={nameInput}
               onChange={(e) => setNameInput(e.target.value)}
               placeholder="Введите имя задачи"
               required
             />
           </div>
-
           <div
             className={classes.default.textOnInput}
             onClick={(e) => e.stopPropagation()}
@@ -102,23 +103,22 @@ function CreateTodoForm(props: CreateFormProps) {
         </div>
         <div className={classes.default.textOnInput}>
           <label htmlFor="desc">Описание</label>
-          <textarea
+          <input
             className={classes.default.formControl}
             id="desc"
             name="description"
+            type="text"
             onChange={(e) => setDescInput(e.target.value)}
             placeholder="Введите описание задачи"
+            value={descInput}
           />
         </div>
 
         <div className={classes.default.btnControl}>
-          <button className={classes.default.btnAction}>Создать</button>
+          <button className={classes.default.btnAction}>Редактировать</button>
           <button
             onClick={(e) => {
               e.preventDefault();
-              setNameInput("");
-              setDescInput("");
-              setCatInput(0);
               props.onClose();
             }}
           >
@@ -126,8 +126,8 @@ function CreateTodoForm(props: CreateFormProps) {
           </button>
         </div>
       </form>
-    </div>
+    </>
   );
 }
 
-export default CreateTodoForm;
+export default UpdateTodoForm;

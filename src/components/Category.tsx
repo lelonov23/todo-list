@@ -15,7 +15,7 @@ function Category(props: CategoryProps) {
     const abortController = new AbortController();
     const todosToUpdate = todos.filter((todo) => todo.categoryId === id);
     todosToUpdate.forEach((todo) => {
-      let todoData = {
+      let todoData: TodoData = {
         id: todo.id,
         name: todo.name,
         description: todo.description,
@@ -37,6 +37,7 @@ function Category(props: CategoryProps) {
                 id: data.id,
                 name: data.name,
                 description: data.description,
+                categoryId: 0,
               };
               return newTodo;
             } else return todo;
