@@ -103,11 +103,10 @@ function UpdateTodoForm(props: UpdateFormProps) {
         </div>
         <div className={classes.default.textOnInput}>
           <label htmlFor="desc">Описание</label>
-          <input
+          <textarea
             className={classes.default.formControl}
             id="desc"
             name="description"
-            type="text"
             onChange={(e) => setDescInput(e.target.value)}
             placeholder="Введите описание задачи"
             value={descInput}

@@ -22,3 +22,28 @@
   word-wrap: break-word;
   word-break: break-all;
 }
+
+.taskInfo h2,
+h3,
+p {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  font-size: 18px;
+}
+
+.taskInfo h2 {
+  display: inline;
+  padding-right: 1rem;
+  font-weight: 500;
+  color: #000;
+}
+
+.taskInfo h3 {
+  display: inline;
+}
+
+.taskInfo p {
+  color: #808080;
+  font-weight: 400;
+  padding-top: 0.5rem;
+}

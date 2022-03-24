@@ -1,8 +1,8 @@
-.todoForm {
+.categoryForm {
   padding: 1rem 0 0 0;
 }
 
-.todoForm button {
+.categoryForm button {
   padding: 0.3rem;
   padding-right: 1rem;
   padding-left: 1rem;
@@ -27,7 +27,7 @@
   text-align: right;
 }
 
-.todoForm textarea {
+.categoryForm textarea {
   width: 97.12%;
   font-family: "Roboto";
   font-style: normal;
@@ -83,7 +83,7 @@ label {
   border: 2px solid #3f72af;
   padding: 0.5rem;
   border-radius: 4px;
-  width: 20rem;
+  width: 42rem;
   font-size: 20px;
 }
 
@@ -97,8 +97,4 @@ label {
 .inputsControl {
   display: flex;
   margin-bottom: 1rem;
-}
-
-.inputsControl div:first-child {
-  margin-right: 1rem;
 }

@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 
 import { PageContext } from "../App";
 
-import * as classes from "./CreateTodoForm.module.css";
+import * as classes from "./CreateCategoryForm.module.css";
 
 function CreateCategoryForm(props: CreateFormProps) {
   const [nameInput, setNameInput] = useState("");
@@ -52,18 +52,17 @@ function CreateCategoryForm(props: CreateFormProps) {
               required
             />
           </div>
-          <div className={classes.default.textOnInput}>
-            <label htmlFor="desc">Описание</label>
-            <input
-              className={classes.default.formControl}
-              id="desc"
-              name="description"
-              type="text"
-              onChange={(e) => setDescInput(e.target.value)}
-              placeholder="Введите описание категории"
-              required
-            />
-          </div>
+        </div>
+        <div className={classes.default.textOnInput}>
+          <label htmlFor="desc">Описание</label>
+          <textarea
+            className={classes.default.formControl}
+            id="desc"
+            name="description"
+            onChange={(e) => setDescInput(e.target.value)}
+            placeholder="Введите описание категории"
+            required
+          />
         </div>
         <div className={classes.default.btnControl}>
           <button className={classes.default.btnAction}>Создать</button>

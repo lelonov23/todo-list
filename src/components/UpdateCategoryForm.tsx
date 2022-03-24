@@ -2,7 +2,8 @@ import { useState, useContext } from "react";
 
 import { PageContext } from "../App";
 
-import * as classes from "./CreateTodoForm.module.css";
+import * as classes from "./CreateCategoryForm.module.css";
+// import * as form_classes from "./UpdateForm.module.css";
 
 function UpdateCategoryForm(props: UpdateFormProps) {
   const { categories, setCategories } = useContext(PageContext);
@@ -59,18 +60,17 @@ function UpdateCategoryForm(props: UpdateFormProps) {
               required
             />
           </div>
-          <div className={classes.default.textOnInput}>
-            <label htmlFor="desc">Описание</label>
-            <input
-              className={classes.default.formControl}
-              id="desc"
-              name="description"
-              type="text"
-              onChange={(e) => setDescInput(e.target.value)}
-              placeholder="Введите описание категории"
-              value={descInput}
-            />
-          </div>
+        </div>
+        <div className={classes.default.textOnInput}>
+          <label htmlFor="desc">Описание</label>
+          <textarea
+            className={classes.default.formControl}
+            id="desc"
+            name="description"
+            onChange={(e) => setDescInput(e.target.value)}
+            placeholder="Введите описание категории"
+            value={descInput}
+          />
         </div>
         <div className={classes.default.btnControl}>
           <button className={classes.default.btnAction}>Редактировать</button>
