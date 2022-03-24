@@ -69,7 +69,10 @@ function Task(props: TodoProps) {
         // onSubmit={() => handleDelete(props.todo.id)}
         // submitText="Удалить"
       >
-        <div>Уверены?</div>
+        <div>
+          <h2>Удаление задачи</h2>
+          <p>Вы уверены, что хотите удалить задачу "{props.todo.name}"?</p>
+        </div>
         <div className={classes.default.btnControl}>
           <button
             className={classes.default.btnAction}

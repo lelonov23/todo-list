@@ -86,7 +86,12 @@ function Category(props: CategoryProps) {
         }}
         show={showDelete}
       >
-        <div>Уверены?</div>
+        <div>
+          <h2>Удаление категории</h2>
+          <p>
+            Вы уверены, что хотите удалить категорию "{props.category.name}"?
+          </p>
+        </div>
         <div className={classes.default.btnControl}>
           <button
             className={classes.default.btnAction}

@@ -47,3 +47,28 @@ p {
   font-weight: 400;
   padding-top: 0.5rem;
 }
+
+.btnAction {
+  background-color: #3f72af;
+  color: #fff !important;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
+
+.btnControl {
+  padding: 1rem 0 0 0;
+  text-align: right;
+}
+
+.btnControl button {
+  padding: 0.3rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  margin-left: 1rem;
+  border: 2px solid #3f72af;
+  border-radius: 4px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #3f72af;
+}

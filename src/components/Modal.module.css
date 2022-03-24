@@ -18,6 +18,7 @@
   background: #dbe2ef;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
   border-radius: 4px;
+  min-width: 40rem;
 }
 
 .modalContent h2 {
@@ -25,13 +26,14 @@
   font-size: 40px;
   font-weight: 500;
   color: #3f72af;
-  margin: 0;
+  margin: 0 0 1rem 0;
+  padding: 1rem 0;
 }
 
 .close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.7rem;
+  right: 0.7rem;
   font-size: 2.3rem;
   color: #3f72af;
 }
