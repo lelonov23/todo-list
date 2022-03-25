@@ -16,11 +16,11 @@ function Task(props: TodoProps) {
   const handleDelete = (id: number) => {
     const abortController = new AbortController();
     fetch(`http://localhost:8089/api/ToDoList/RemoveTask/${id}`)
-      .then((res) => {
-        setShowDelete(false);
-      })
       .then(() => {
         setTodos(todos.filter((todo) => todo.id !== id));
+      })
+      .then(() => {
+        setShowDelete(false);
       });
     return () => {
       abortController.abort();
@@ -63,12 +63,7 @@ function Task(props: TodoProps) {
           <i className="fa-solid fa-trash"></i>
         </button>
       </div>
-      <Modal
-        onClose={() => setShowDelete(false)}
-        show={showDelete}
-        // onSubmit={() => handleDelete(props.todo.id)}
-        // submitText="Удалить"
-      >
+      <Modal onClose={() => setShowDelete(false)} show={showDelete}>
         <div>
           <h2>Удаление задачи</h2>
           <p>Вы уверены, что хотите удалить задачу "{props.todo.name}"?</p>
