@@ -10,6 +10,7 @@ function CreateTodoForm(props: CreateFormProps) {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
   const [nameInputError, setNameInputError] = useState(false);
+  const [descInputError, setDescInputError] = useState(false);
   const [catInput, setCatInput] = useState<number>(0);
   const {
     todos,
@@ -37,33 +38,44 @@ function CreateTodoForm(props: CreateFormProps) {
 
   const handleSubmitTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const todoData: TodoData = { name: nameInput, categoryId: 0 };
-    if (descInput) {
-      todoData["description"] = descInput;
+    if (nameInput.length === 0 || nameInput.length > 255)
+      setNameInputError(true);
+    if (descInput.length > 1536) setDescInputError(true);
+
+    if (
+      !nameInputError &&
+      nameInput.length !== 0 &&
+      !descInputError &&
+      descInput.length <= 1536
+    ) {
+      const todoData: TodoData = { name: nameInput, categoryId: 0 };
+      if (descInput) {
+        todoData["description"] = descInput;
+      }
+
+      if (catInput) {
+        todoData["categoryId"] = catInput;
+      }
+
+      console.log(todoData);
+
+      const res = await fetch("http://localhost:8089/api/ToDoList/AddTask", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(todoData),
+      });
+      await res.json().then((data) => {
+        setTodos([...todos, data]);
+        setNameInput("");
+        setDescInput("");
+        setCatInput(0);
+        resetThenSet(0);
+        props.onClose();
+      });
     }
-
-    if (catInput) {
-      todoData["categoryId"] = catInput;
-    }
-
-    console.log(todoData);
-
-    const res = await fetch("http://localhost:8089/api/ToDoList/AddTask", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(todoData),
-    });
-    await res.json().then((data) => {
-      setTodos([...todos, data]);
-      setNameInput("");
-      setDescInput("");
-      setCatInput(0);
-      resetThenSet(0);
-      props.onClose();
-    });
   };
 
   return (
@@ -95,13 +107,20 @@ function CreateTodoForm(props: CreateFormProps) {
               type="text"
               onChange={(e) => {
                 setNameInput(e.target.value);
-                setNameInputError(e.target.value.length === 0);
+                setNameInputError(
+                  e.target.value.length === 0 || e.target.value.length > 255
+                );
               }}
               placeholder="Введите имя задачи"
             />
-            {nameInputError ? (
+            {nameInputError && nameInput.length === 0 ? (
               <span className="name-input-error">
                 Поле должно быть обязательным
+              </span>
+            ) : null}
+            {nameInputError && nameInput.length > 255 ? (
+              <span className="name-input-error">
+                Поле не может содержать больше 255 знаков
               </span>
             ) : null}
           </div>
@@ -120,13 +139,26 @@ function CreateTodoForm(props: CreateFormProps) {
             />
           </div>
         </div>
-        <div className={classes.default.textOnInput}>
+        <div
+          className={
+            descInputError
+              ? `${classes.default.textOnInput} ${classes.default.textOnInputError}`
+              : classes.default.textOnInput
+          }
+        >
           <label htmlFor="desc">Описание</label>
           <textarea
-            className={classes.default.formControl}
+            className={
+              descInputError
+                ? `${classes.default.formControlError} ${classes.default.formControl}`
+                : classes.default.formControl
+            }
             id="desc"
             name="description"
-            onChange={(e) => setDescInput(e.target.value)}
+            onChange={(e) => {
+              setDescInput(e.target.value);
+              setDescInputError(e.target.value.length > 1536);
+            }}
             placeholder="Введите описание задачи"
           />
         </div>
