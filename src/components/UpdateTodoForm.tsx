@@ -18,7 +18,11 @@ function UpdateTodoForm(props: UpdateFormProps) {
   } = useContext(PageContext);
   const todoToUpdate = todos.filter((todo) => todo.id === id)[0];
   const [nameInput, setNameInput] = useState(todoToUpdate.name);
-  const [descInput, setDescInput] = useState(todoToUpdate.description);
+  const [descInput, setDescInput] = useState(
+    todoToUpdate.description ? todoToUpdate.description : ""
+  );
+  const [nameInputError, setNameInputError] = useState(false);
+  const [descInputError, setDescInputError] = useState(false);
   const [catInput, setCatInput] = useState(todoToUpdate.categoryId);
 
   const onSelect = (id: number) => {
@@ -38,28 +42,39 @@ function UpdateTodoForm(props: UpdateFormProps) {
 
   const handleSubmitTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const todoData: TodoData = {
-      id: id,
-      name: nameInput,
-      categoryId: catInput,
-    };
-    if (descInput) {
-      todoData["description"] = descInput;
-    }
+    if (nameInput.length === 0 || nameInput.length > 255)
+      setNameInputError(true);
+    if (setDescInput.length > 1536) setDescInputError(true);
 
-    const res = await fetch("http://localhost:8089/api/ToDoList/UpdateTask", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(todoData),
-    });
-    await res.json().then((data: Todo) => {
-      const newTodos: Todo[] = todos.filter((todo) => todo.id !== data.id);
-      setTodos([...newTodos, data]);
-      props.onClose();
-    });
+    if (
+      !nameInputError &&
+      nameInput.length !== 0 &&
+      !descInputError &&
+      descInput.length <= 10
+    ) {
+      const todoData: TodoData = {
+        id: id,
+        name: nameInput,
+        categoryId: catInput,
+      };
+      if (descInput) {
+        todoData["description"] = descInput;
+      }
+
+      const res = await fetch("http://localhost:8089/api/ToDoList/UpdateTask", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(todoData),
+      });
+      await res.json().then((data: Todo) => {
+        const newTodos: Todo[] = todos.filter((todo) => todo.id !== data.id);
+        setTodos([...newTodos, data]);
+        props.onClose();
+      });
+    }
   };
 
   useEffect(() => {
@@ -74,18 +89,44 @@ function UpdateTodoForm(props: UpdateFormProps) {
         onSubmit={(e) => handleSubmitTodo(e)}
       >
         <div className={classes.default.inputsControl}>
-          <div className={classes.default.textOnInput}>
-            <label htmlFor="name">Имя</label>
+          <div
+            className={
+              nameInputError
+                ? `${classes.default.textOnInput} ${classes.default.textOnInputError}`
+                : classes.default.textOnInput
+            }
+          >
+            <label htmlFor="name">
+              Имя<span className="required">*</span>
+            </label>
             <input
-              className={classes.default.formControl}
+              className={
+                nameInputError
+                  ? `${classes.default.formControlError} ${classes.default.formControl}`
+                  : classes.default.formControl
+              }
               id="name"
               name="name"
               type="text"
               value={nameInput}
-              onChange={(e) => setNameInput(e.target.value)}
+              onChange={(e) => {
+                setNameInput(e.target.value);
+                setNameInputError(
+                  e.target.value.length === 0 || e.target.value.length > 255
+                );
+              }}
               placeholder="Введите имя задачи"
-              required
             />
+            {nameInputError && nameInput.length === 0 ? (
+              <span className="name-input-error">
+                Поле должно быть обязательным
+              </span>
+            ) : null}
+            {nameInputError && nameInput.length > 255 ? (
+              <span className="name-input-error">
+                Поле не может содержать больше 255 знаков
+              </span>
+            ) : null}
           </div>
           <div
             className={classes.default.textOnInput}
@@ -101,16 +142,34 @@ function UpdateTodoForm(props: UpdateFormProps) {
             />
           </div>
         </div>
-        <div className={classes.default.textOnInput}>
+        <div
+          className={
+            descInputError
+              ? `${classes.default.textOnInput} ${classes.default.textOnInputError}`
+              : classes.default.textOnInput
+          }
+        >
           <label htmlFor="desc">Описание</label>
           <textarea
-            className={classes.default.formControl}
+            className={
+              descInputError
+                ? `${classes.default.formControlError} ${classes.default.formControl}`
+                : classes.default.formControl
+            }
             id="desc"
             name="description"
-            onChange={(e) => setDescInput(e.target.value)}
+            onChange={(e) => {
+              setDescInput(e.target.value);
+              setDescInputError(e.target.value.length > 1536);
+            }}
             placeholder="Введите описание задачи"
             value={descInput}
           />
+          {descInputError && descInput.length > 1536 ? (
+            <span className="name-input-error">
+              Поле не может содержать больше 1536 знаков
+            </span>
+          ) : null}
         </div>
 
         <div className={classes.default.btnControl}>

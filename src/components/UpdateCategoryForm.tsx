@@ -10,33 +10,48 @@ function UpdateCategoryForm(props: UpdateFormProps) {
   const { id } = props;
   const catToUpdate = categories.filter((category) => category.id === id)[0];
   const [nameInput, setNameInput] = useState(catToUpdate.name);
-  const [descInput, setDescInput] = useState(catToUpdate.description);
+  const [descInput, setDescInput] = useState(
+    catToUpdate.description ? catToUpdate.description : ""
+  );
+  const [nameInputError, setNameInputError] = useState(false);
+  const [descInputError, setDescInputError] = useState(false);
 
   const handleSubmitCategory = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const catData: CatData = { id: id, name: nameInput };
-    if (descInput) {
-      catData["description"] = descInput;
-    }
+    if (nameInput.length === 0 || nameInput.length > 255)
+      setNameInputError(true);
+    if (setDescInput.length > 1536) setDescInputError(true);
 
-    const res = await fetch(
-      "http://localhost:8089/api/ToDoList/UpdateCategory",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(catData),
+    if (
+      !nameInputError &&
+      nameInput.length !== 0 &&
+      !descInputError &&
+      descInput.length <= 10
+    ) {
+      const catData: CatData = { id: id, name: nameInput };
+      if (descInput) {
+        catData["description"] = descInput;
       }
-    );
-    await res.json().then((data: Category) => {
-      const newCats: Category[] = categories.filter(
-        (category) => category.id !== data.id
+
+      const res = await fetch(
+        "http://localhost:8089/api/ToDoList/UpdateCategory",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(catData),
+        }
       );
-      setCategories([...newCats, data]);
-      props.onClose();
-    });
+      await res.json().then((data: Category) => {
+        const newCats: Category[] = categories.filter(
+          (category) => category.id !== data.id
+        );
+        setCategories([...newCats, data]);
+        props.onClose();
+      });
+    }
   };
 
   return (
@@ -47,30 +62,74 @@ function UpdateCategoryForm(props: UpdateFormProps) {
         onSubmit={(e) => handleSubmitCategory(e)}
       >
         <div className={classes.default.inputsControl}>
-          <div className={classes.default.textOnInput}>
-            <label htmlFor="name">Имя</label>
+          <div
+            className={
+              nameInputError
+                ? `${classes.default.textOnInput} ${classes.default.textOnInputError}`
+                : classes.default.textOnInput
+            }
+          >
+            <label htmlFor="name">
+              Имя<span className="required">*</span>
+            </label>
             <input
-              className={classes.default.formControl}
+              className={
+                nameInputError
+                  ? `${classes.default.formControlError} ${classes.default.formControl}`
+                  : classes.default.formControl
+              }
               id="name"
               name="name"
               type="text"
               value={nameInput}
-              onChange={(e) => setNameInput(e.target.value)}
+              onChange={(e) => {
+                setNameInput(e.target.value);
+                setNameInputError(
+                  e.target.value.length === 0 || e.target.value.length > 255
+                );
+              }}
               placeholder="Введите имя категории"
-              required
             />
+            {nameInputError && nameInput.length === 0 ? (
+              <span className="name-input-error">
+                Поле должно быть обязательным
+              </span>
+            ) : null}
+            {nameInputError && nameInput.length > 255 ? (
+              <span className="name-input-error">
+                Поле не может содержать больше 255 знаков
+              </span>
+            ) : null}
           </div>
         </div>
-        <div className={classes.default.textOnInput}>
+        <div
+          className={
+            descInputError
+              ? `${classes.default.textOnInput} ${classes.default.textOnInputError}`
+              : classes.default.textOnInput
+          }
+        >
           <label htmlFor="desc">Описание</label>
           <textarea
-            className={classes.default.formControl}
+            className={
+              descInputError
+                ? `${classes.default.formControlError} ${classes.default.formControl}`
+                : classes.default.formControl
+            }
             id="desc"
             name="description"
-            onChange={(e) => setDescInput(e.target.value)}
+            onChange={(e) => {
+              setDescInput(e.target.value);
+              setDescInputError(e.target.value.length > 1536);
+            }}
             placeholder="Введите описание категории"
             value={descInput}
           />
+          {descInputError && descInput.length > 1536 ? (
+            <span className="name-input-error">
+              Поле не может содержать больше 1536 знаков
+            </span>
+          ) : null}
         </div>
         <div className={classes.default.btnControl}>
           <button className={classes.default.btnAction}>Редактировать</button>
