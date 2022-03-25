@@ -49,10 +49,21 @@ p {
 }
 
 .btnAction {
-  background-color: #3f72af;
+  background-color: #3f72af !important;
   color: #fff !important;
   padding-left: 3rem !important;
   padding-right: 3rem !important;
+}
+
+.btnAction:hover,
+.btnAction:focus {
+  background-color: #257fea !important;
+  border-color: #257fea !important;
+}
+
+.btnAction:active {
+  background-color: #65abff !important;
+  border-color: #65abff !important;
 }
 
 .btnControl {
@@ -71,4 +82,17 @@ p {
   font-weight: 400;
   font-size: 20px;
   color: #3f72af;
+  background: none;
+}
+
+.btnControl button:hover,
+.btnControl button:focus {
+  background-color: rgba(37, 127, 234, 0.2);
+  border-color: #257fea;
+}
+
+.btnControl button:active {
+  background-color: #257fea;
+  border-color: #257fea;
+  color: #fff;
 }

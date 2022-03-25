@@ -11,11 +11,32 @@
   color: #3f72af;
 }
 
+.todoForm button:hover,
+.todoForm button:focus {
+  background-color: rgba(37, 127, 234, 0.2);
+  border-color: #257fea;
+}
+
+.todoForm button:active {
+  background-color: #257fea;
+  border-color: #257fea;
+  color: #fff;
+}
+
 .btnAction {
   background-color: #3f72af;
   color: #fff !important;
   padding-left: 3rem !important;
   padding-right: 3rem !important;
+}
+
+.btnAction:hover,
+.btnAction:focus {
+  background-color: #257fea;
+}
+
+.btnAction:active {
+  background-color: #65abff;
 }
 
 .btnControl {
