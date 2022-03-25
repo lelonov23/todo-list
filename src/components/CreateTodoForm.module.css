@@ -74,6 +74,10 @@
   font-size: 18px;
 }
 
+.textOnInputError label {
+  color: #ec1d1d;
+}
+
 .textOnInput label:after,
 .dropdownLabel::after {
   content: " ";
@@ -106,11 +110,20 @@ label {
   font-size: 20px;
 }
 
+.formControlError {
+  border: 2px solid #ec1d1d !important;
+}
+
 .formControl:hover,
 .formControl:focus {
   background-color: #dbe2ef;
   border: 2px solid #257fea !important;
   outline: none !important;
+}
+
+.formControlError:hover,
+.formControlError:focus {
+  border: 2px solid #ec1d1d !important;
 }
 
 .inputsControl {

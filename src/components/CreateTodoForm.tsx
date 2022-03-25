@@ -9,6 +9,7 @@ import Dropdown from "./Dropdown";
 function CreateTodoForm(props: CreateFormProps) {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
+  const [nameInputError, setNameInputError] = useState(false);
   const [catInput, setCatInput] = useState<number>(0);
   const {
     todos,
@@ -73,17 +74,36 @@ function CreateTodoForm(props: CreateFormProps) {
         onSubmit={(e) => handleSubmitTodo(e)}
       >
         <div className={classes.default.inputsControl}>
-          <div className={classes.default.textOnInput}>
-            <label htmlFor="name">Имя</label>
+          <div
+            className={
+              nameInputError
+                ? `${classes.default.textOnInput} ${classes.default.textOnInputError}`
+                : classes.default.textOnInput
+            }
+          >
+            <label htmlFor="name">
+              Имя<span className="required">*</span>
+            </label>
             <input
-              className={classes.default.formControl}
+              className={
+                nameInputError
+                  ? `${classes.default.formControlError} ${classes.default.formControl}`
+                  : classes.default.formControl
+              }
               id="name"
               name="todo-name"
               type="text"
-              onChange={(e) => setNameInput(e.target.value)}
+              onChange={(e) => {
+                setNameInput(e.target.value);
+                setNameInputError(e.target.value.length === 0);
+              }}
               placeholder="Введите имя задачи"
-              required
             />
+            {nameInputError ? (
+              <span className="name-input-error">
+                Поле должно быть обязательным
+              </span>
+            ) : null}
           </div>
 
           <div

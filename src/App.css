@@ -5,3 +5,19 @@ button {
   background: none;
   cursor: pointer;
 }
+
+.required {
+  color: #ec1d1d;
+}
+
+.name-input-error {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+
+  display: flex;
+  align-items: center;
+
+  color: #ec1d1d;
+}
