@@ -29,13 +29,19 @@ function App() {
 
   useEffect(() => {
     fetch("http://localhost:8089/api/ToDoList/GetCategories")
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Unable to fetch categories");
+      })
       .then((data) => {
         setCategories(data);
       });
 
     fetch("http://localhost:8089/api/ToDoList/GetTasks")
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Unable to fetch tasks");
+      })
       .then((data) => {
         setTodos(data);
       });

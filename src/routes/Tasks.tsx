@@ -8,13 +8,7 @@ import { PageContext } from "../App";
 function Tasks() {
   const { setPage, todos, categories } = useContext(PageContext);
   useEffect(() => {
-    let abortController = new AbortController();
-    // console.log(todos);
-    // console.log(categories);
     setPage("tasks");
-    return () => {
-      abortController.abort();
-    };
   });
 
   if (!todos || !todos.length)

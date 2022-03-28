@@ -11,6 +11,7 @@ function UpdateTodoForm(props: UpdateFormProps) {
   const {
     todos,
     setTodos,
+    categories,
     selectList,
     setSelectList,
     isListOpen,
@@ -40,7 +41,7 @@ function UpdateTodoForm(props: UpdateFormProps) {
     setSelectList(newSelectData);
   };
 
-  const handleSubmitTodo = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (nameInput.length === 0 || nameInput.length > 255)
       setNameInputError(true);
@@ -52,6 +53,7 @@ function UpdateTodoForm(props: UpdateFormProps) {
       !descInputError &&
       descInput.length <= 10
     ) {
+      const abortController = new AbortController();
       const todoData: TodoData = {
         id: id,
         name: nameInput,
@@ -61,19 +63,26 @@ function UpdateTodoForm(props: UpdateFormProps) {
         todoData["description"] = descInput;
       }
 
-      const res = await fetch("http://localhost:8089/api/ToDoList/UpdateTask", {
+      fetch("http://localhost:8089/api/ToDoList/UpdateTask", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(todoData),
-      });
-      await res.json().then((data: Todo) => {
-        const newTodos: Todo[] = todos.filter((todo) => todo.id !== data.id);
-        setTodos([...newTodos, data]);
-        props.onClose();
-      });
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error("Failed to update task");
+        })
+        .then((data: Todo) => {
+          const newTodos: Todo[] = todos.filter((todo) => todo.id !== data.id);
+          setTodos([...newTodos, data]);
+          props.onClose();
+        });
+      return () => {
+        abortController.abort();
+      };
     }
   };
 
@@ -139,6 +148,7 @@ function UpdateTodoForm(props: UpdateFormProps) {
               resetThenSet={resetThenSet}
               onSelect={onSelect}
               isListOpen={[isListOpen, setIsListOpen]}
+              isUpdate={true}
             />
           </div>
         </div>

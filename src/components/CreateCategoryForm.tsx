@@ -11,7 +11,7 @@ function CreateCategoryForm(props: CreateFormProps) {
   const [descInputError, setDescInputError] = useState(false);
   const { categories, setCategories } = useContext(PageContext);
 
-  const handleSubmitCategory = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitCategory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (nameInput.length === 0 || nameInput.length > 255)
@@ -29,23 +29,24 @@ function CreateCategoryForm(props: CreateFormProps) {
         catData["description"] = descInput;
       }
 
-      const res = await fetch(
-        "http://localhost:8089/api/ToDoList/AddCategory",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(catData),
-        }
-      );
-      await res.json().then((data: Category) => {
-        setCategories([...categories, data]);
-        setNameInput("");
-        setDescInput("");
-        props.onClose();
-      });
+      fetch("http://localhost:8089/api/ToDoList/AddCategory", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(catData),
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error("Failed to create category");
+        })
+        .then((data: Category) => {
+          setCategories([...categories, data]);
+          setNameInput("");
+          setDescInput("");
+          props.onClose();
+        });
     }
   };
 

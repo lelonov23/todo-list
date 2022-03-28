@@ -36,7 +36,7 @@ function CreateTodoForm(props: CreateFormProps) {
     setSelectList(newSelectData);
   };
 
-  const handleSubmitTodo = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (nameInput.length === 0 || nameInput.length > 255)
       setNameInputError(true);
@@ -48,6 +48,7 @@ function CreateTodoForm(props: CreateFormProps) {
       !descInputError &&
       descInput.length <= 1536
     ) {
+      const abortController = new AbortController();
       const todoData: TodoData = { name: nameInput, categoryId: 0 };
       if (descInput) {
         todoData["description"] = descInput;
@@ -59,22 +60,29 @@ function CreateTodoForm(props: CreateFormProps) {
 
       console.log(todoData);
 
-      const res = await fetch("http://localhost:8089/api/ToDoList/AddTask", {
+      fetch("http://localhost:8089/api/ToDoList/AddTask", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(todoData),
-      });
-      await res.json().then((data) => {
-        setTodos([...todos, data]);
-        setNameInput("");
-        setDescInput("");
-        setCatInput(0);
-        resetThenSet(0);
-        props.onClose();
-      });
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error("Failed to create task");
+        })
+        .then((data) => {
+          setTodos([...todos, data]);
+          setNameInput("");
+          setDescInput("");
+          setCatInput(0);
+          resetThenSet(0);
+          props.onClose();
+        });
+      return () => {
+        abortController.abort();
+      };
     }
   };
 
@@ -136,6 +144,7 @@ function CreateTodoForm(props: CreateFormProps) {
               resetThenSet={resetThenSet}
               onSelect={onSelect}
               isListOpen={[isListOpen, setIsListOpen]}
+              isUpdate={false}
             />
           </div>
         </div>

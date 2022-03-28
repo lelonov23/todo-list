@@ -8,11 +8,7 @@ function Categories() {
   const { setPage, categories, setCategories } = useContext(PageContext);
 
   useEffect(() => {
-    let abortController = new AbortController();
     setPage("categories");
-    return () => {
-      abortController.abort();
-    };
   });
 
   if (!categories || categories.length === 0)

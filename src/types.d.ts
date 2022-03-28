@@ -55,6 +55,7 @@ interface DropdownProps {
   isListOpen: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   resetThenSet: (id: number) => void;
   list: CategorySelect[];
+  isUpdate: boolean;
 }
 
 type CategorySelect = {

@@ -16,7 +16,7 @@ function UpdateCategoryForm(props: UpdateFormProps) {
   const [nameInputError, setNameInputError] = useState(false);
   const [descInputError, setDescInputError] = useState(false);
 
-  const handleSubmitCategory = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitCategory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (nameInput.length === 0 || nameInput.length > 255)
       setNameInputError(true);
@@ -28,29 +28,34 @@ function UpdateCategoryForm(props: UpdateFormProps) {
       !descInputError &&
       descInput.length <= 10
     ) {
+      const abortController = new AbortController();
       const catData: CatData = { id: id, name: nameInput };
       if (descInput) {
         catData["description"] = descInput;
       }
 
-      const res = await fetch(
-        "http://localhost:8089/api/ToDoList/UpdateCategory",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(catData),
-        }
-      );
-      await res.json().then((data: Category) => {
-        const newCats: Category[] = categories.filter(
-          (category) => category.id !== data.id
-        );
-        setCategories([...newCats, data]);
-        props.onClose();
-      });
+      fetch("http://localhost:8089/api/ToDoList/UpdateCategory", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(catData),
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error("Failed to update category");
+        })
+        .then((data: Category) => {
+          const newCats: Category[] = categories.filter(
+            (category) => category.id !== data.id
+          );
+          setCategories([...newCats, data]);
+          props.onClose();
+        });
+      return () => {
+        abortController.abort();
+      };
     }
   };
 

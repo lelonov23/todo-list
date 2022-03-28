@@ -1,10 +1,12 @@
 import * as classes from "./Dropdown.module.css";
 
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { PageContext } from "../App";
 
 function Dropdown(props: DropdownProps) {
   const [headerTitle, setHeaderTitle] = useState(props.title);
   const [isListOpen, setIsListOpen] = props.isListOpen;
+  const { selectList } = useContext(PageContext);
 
   const selectItem = (item: CategorySelect) => {
     const { onSelect, resetThenSet } = props;
@@ -14,6 +16,15 @@ function Dropdown(props: DropdownProps) {
     onSelect(id);
     resetThenSet(id);
   };
+
+  useEffect(() => {
+    if (props.isUpdate)
+      for (let listItem of selectList) {
+        if (listItem.selected && listItem.title !== headerTitle) {
+          setHeaderTitle(listItem.title);
+        }
+      }
+  }, []);
 
   return (
     <div className={classes.default.wrapper}>
