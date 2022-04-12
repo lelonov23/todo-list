@@ -24,38 +24,9 @@ interface CatData {
   description?: string;
 }
 
-interface TodoProps {
-  todo: Todo;
-}
-
-interface CategoryProps {
-  category: Category;
-}
-
-interface ModalProps {
-  children: React.ReactNode;
-  show?: boolean;
-  onClose: () => void;
-  // onSubmit: () => void;
-  // submitText: string;
-}
-
-interface CreateFormProps {
-  onClose: () => void;
-}
-
 interface UpdateFormProps {
   onClose: () => void;
   id: number;
-}
-
-interface DropdownProps {
-  onSelect: (id: number) => void;
-  title: string;
-  isListOpen: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  resetThenSet: (id: number) => void;
-  list: CategorySelect[];
-  isUpdate: boolean;
 }
 
 type CategorySelect = {

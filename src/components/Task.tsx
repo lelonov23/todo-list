@@ -7,7 +7,11 @@ import { PageContext } from "../App";
 
 import { useState, useContext } from "react";
 
-function Task(props: TodoProps) {
+interface TodoProps {
+  todo: Todo;
+}
+
+const Task: React.FC<TodoProps> = (props) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
 
@@ -89,6 +93,6 @@ function Task(props: TodoProps) {
       </Modal>
     </div>
   );
-}
+};
 
 export default Task;

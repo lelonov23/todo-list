@@ -1,6 +1,12 @@
 import * as classes from "./Modal.module.css";
 
-function Modal(props: ModalProps) {
+interface ModalProps {
+  children: React.ReactNode;
+  show?: boolean;
+  onClose: () => void;
+}
+
+const Modal: React.FC<ModalProps> = (props) => {
   if (!props.show) {
     return null;
   }
@@ -18,6 +24,6 @@ function Modal(props: ModalProps) {
       </div>
     </div>
   );
-}
+};
 
 export default Modal;

@@ -5,7 +5,7 @@ import { PageContext } from "../App";
 import * as classes from "./CreateCategoryForm.module.css";
 // import * as form_classes from "./UpdateForm.module.css";
 
-function UpdateCategoryForm(props: UpdateFormProps) {
+const UpdateCategoryForm: React.FC<UpdateFormProps> = (props) => {
   const { categories, setCategories } = useContext(PageContext);
   const { id } = props;
   const catToUpdate = categories.filter((category) => category.id === id)[0];
@@ -150,6 +150,6 @@ function UpdateCategoryForm(props: UpdateFormProps) {
       </form>
     </>
   );
-}
+};
 
 export default UpdateCategoryForm;

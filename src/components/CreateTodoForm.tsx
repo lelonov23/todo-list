@@ -6,7 +6,11 @@ import { PageContext } from "../App";
 
 import Dropdown from "./Dropdown";
 
-function CreateTodoForm(props: CreateFormProps) {
+interface CreateFormProps {
+  onClose: () => void;
+}
+
+const CreateTodoForm: React.FC<CreateFormProps> = (props) => {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
   const [nameInputError, setNameInputError] = useState(false);
@@ -189,6 +193,6 @@ function CreateTodoForm(props: CreateFormProps) {
       </form>
     </div>
   );
-}
+};
 
 export default CreateTodoForm;

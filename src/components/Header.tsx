@@ -7,7 +7,7 @@ import CreateTodoForm from "./CreateTodoForm";
 import CreateCategoryForm from "./CreateCategoryForm";
 import { PageContext } from "../App";
 
-function Header() {
+const Header: React.FC = () => {
   const [show, setShow] = useState(false);
 
   const { page } = useContext(PageContext);
@@ -85,6 +85,6 @@ function Header() {
       {isCategories && createCategoryModal}
     </header>
   );
-}
+};
 
 export default Header;

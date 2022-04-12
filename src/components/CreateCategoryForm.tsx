@@ -4,7 +4,11 @@ import { PageContext } from "../App";
 
 import * as classes from "./CreateCategoryForm.module.css";
 
-function CreateCategoryForm(props: CreateFormProps) {
+interface CreateFormProps {
+  onClose: () => void;
+}
+
+const CreateCategoryForm: React.FC<CreateFormProps> = (props) => {
   const [nameInput, setNameInput] = useState("");
   const [descInput, setDescInput] = useState("");
   const [nameInputError, setNameInputError] = useState(false);
@@ -141,6 +145,6 @@ function CreateCategoryForm(props: CreateFormProps) {
       </form>
     </>
   );
-}
+};
 
 export default CreateCategoryForm;

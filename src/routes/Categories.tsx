@@ -4,7 +4,7 @@ import { useEffect, useContext } from "react";
 import Category from "../components/Category";
 import { PageContext } from "../App";
 
-function Categories() {
+const Categories: React.FC = () => {
   const { setPage, categories, setCategories } = useContext(PageContext);
 
   useEffect(() => {
@@ -29,6 +29,6 @@ function Categories() {
         </ul>
       </div>
     );
-}
+};
 
 export default Categories;

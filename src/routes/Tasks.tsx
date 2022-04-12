@@ -5,7 +5,7 @@ import Task from "../components/Task";
 
 import { PageContext } from "../App";
 
-function Tasks() {
+const Tasks: React.FC = () => {
   const { setPage, todos, categories } = useContext(PageContext);
   useEffect(() => {
     setPage("tasks");
@@ -29,6 +29,6 @@ function Tasks() {
         </ul>
       </div>
     );
-}
+};
 
 export default Tasks;

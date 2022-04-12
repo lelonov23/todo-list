@@ -5,7 +5,11 @@ import { PageContext } from "../App";
 
 import { useState, useContext } from "react";
 
-function Category(props: CategoryProps) {
+interface CategoryProps {
+  category: Category;
+}
+
+const Category: React.FC<CategoryProps> = (props) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const { todos, setCategories, categories, setTodos } =
@@ -110,6 +114,6 @@ function Category(props: CategoryProps) {
       </Modal>
     </div>
   );
-}
+};
 
 export default Category;

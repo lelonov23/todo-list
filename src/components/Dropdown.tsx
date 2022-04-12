@@ -3,7 +3,15 @@ import * as classes from "./Dropdown.module.css";
 import { useState, useContext, useEffect } from "react";
 import { PageContext } from "../App";
 
-function Dropdown(props: DropdownProps) {
+interface DropdownProps {
+  onSelect: (id: number) => void;
+  title: string;
+  isListOpen: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  resetThenSet: (id: number) => void;
+  list: CategorySelect[];
+  isUpdate: boolean;
+}
+const Dropdown: React.FC<DropdownProps> = (props) => {
   const [headerTitle, setHeaderTitle] = useState(props.title);
   const [isListOpen, setIsListOpen] = props.isListOpen;
   const { selectList } = useContext(PageContext);
@@ -64,6 +72,6 @@ function Dropdown(props: DropdownProps) {
       )}
     </div>
   );
-}
+};
 
 export default Dropdown;

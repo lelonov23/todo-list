@@ -6,7 +6,7 @@ import Dropdown from "./Dropdown";
 
 import * as classes from "./CreateTodoForm.module.css";
 
-function UpdateTodoForm(props: UpdateFormProps) {
+const UpdateTodoForm: React.FC<UpdateFormProps> = (props) => {
   const { id } = props;
   const {
     todos,
@@ -196,6 +196,6 @@ function UpdateTodoForm(props: UpdateFormProps) {
       </form>
     </>
   );
-}
+};
 
 export default UpdateTodoForm;

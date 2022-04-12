@@ -18,7 +18,7 @@ export const PageContext = createContext<PageContext>({
   setIsListOpen: () => {},
 });
 
-function App() {
+const App: React.FC = () => {
   const [page, setPage] = useState<PageState>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectList, setSelectList] = useState<CategorySelect[]>([
@@ -86,6 +86,6 @@ function App() {
       </PageContext.Provider>
     </div>
   );
-}
+};
 
 export default App;
