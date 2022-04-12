@@ -1,10 +1,10 @@
 # todo-list
 
-> React realisation of a simple to-do list
+> Realisation of a simple to-do list using React and TypeScript
 
 ## Built With
 
-- JavaScript
+- TypeScript
 - React
 - HTML5, CSS3
 
